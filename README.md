@@ -1,6 +1,6 @@
- # Commandos
+# Wolf Esports Tournament Manager
 
-A secure web application for managing online orders, users, and products, developed using Java, Thymeleaf, and Hibernate.
+A console and web application for managing players, teams, and tournaments in the e-sport domain, developed using Java, Spring Core, and Hibernate.
 
 ## Table of Contents
 
@@ -14,14 +14,14 @@ A secure web application for managing online orders, users, and products, develo
 ## Project Overview
 
 **Context**:  
-Commandos is a web application designed for an enterprise to enhance its online order management capabilities. The application allows customers to place orders and enables administrators to manage users and products efficiently.
+Wolf Esports is designed for an e-sport organization to help organize and monitor video game tournaments. The application manages players, teams, and tournaments efficiently, providing both basic and advanced tournament duration estimations.
 
 **Objectives**:
-- Implement user management with session-based authentication `HttpSession`, differentiating between Admin and Client roles.
-- Use Thymeleaf as the template engine for dynamic page layouts and replacing JSP/JSTL.
-- Implement CRUD operations for products, orders, and users.
-- Write unit tests with JUnit and Mockito for business and data access components.
+- Implement player, team, and tournament management.
+- Use Spring Core for Dependency Injection (DI) via XML configuration `applicationContext.xml`.
+- Implement CRUD operations for `players`, `teams`, and `tournaments`.
 - Apply a layered architecture (MVC) to separate presentation, business, and persistence logic.
+- Demonstrate the Open/Closed principle by extending the `TournamentDao` interface.
 
 ## Installation
 
@@ -30,29 +30,24 @@ Commandos is a web application designed for an enterprise to enhance its online 
 - Java 8 or higher
 - Apache Maven
 - MySQL Server
-- Apache Tomcat v9.x
 
 ### Setup your database:
 
-1. Ensure your PostgreSQL server is running.
-2. Navigate to the directory containing `Database.sql`.
-3. Run the following command to create the database and tables:
-   ```bash
-   psql -U your_username -d your_database -f Database.sql
+1. The application automatically creates the required tables in the H2 database when it runs, as configured in `persistence.xml`.
 
 ### Setup environment variable
 
 1. **For windows:**
    ```cmd
-   set DB_URL= **Your PostgreSQL URL**
-   set DB_USER= "dbadmin"
-   set DB_PASSWORD = "azerty"
+   set DB_URL= "database url"
+   set DB_USER= "username"
+   set DB_PASSWORD = "password"
 
 2. **For linux based:**
    ```bash
-   export DB_URL= **Your PostgreSQL URL**
-   export DB_USER= "dbadmin"
-   export DB_PASSWORD = "azerty"
+   export DB_URL= "database url"
+   export DB_USER= "username"
+   export DB_PASSWORD = "password"
 
 
 ### Steps
@@ -60,8 +55,8 @@ Commandos is a web application designed for an enterprise to enhance its online 
 1. **Clone the repository:**
 
    ```sh
-   git clone https://github.com/Yorften/Commandos.git
-   cd 3CHAN
+   git clone https://https://github.com/Yorften/WolfEsports.git
+   cd WolfEsports/wolfesports
 
 2. **Build the application:**
    ```sh
@@ -74,7 +69,7 @@ Commandos is a web application designed for an enterprise to enhance its online 
 4. **Deploy:**
 
 - Deploy the WAR file in Apache Tomcat by copying the WAR from the /target folder to Tomcat's webapps directory.
-- Start the Tomcat server and access the application in your browser at http://localhost:8080/3CHAN.
+- Start the Tomcat server and access the application in your browser at http://localhost:8080/WolfEsports.
 
 5. **Run with Eclipse/IntelliJ IDEA (optional)**
 
@@ -85,7 +80,7 @@ Commandos is a web application designed for an enterprise to enhance its online 
 ## Structure
 
 - **Model Layer**:  
-  Defines entities such as `User`, `Product`, `Command`, and their relationships using JPA.
+  Defines entities such as `Player`, `Team`, `Tournament`, and `Game` and their relationships using JPA.
   
 - **Controller Layer**:  
   Handles user interactions, receives input from the UI, and communicates with the Service layer to process the requests.
@@ -101,18 +96,18 @@ Commandos is a web application designed for an enterprise to enhance its online 
 
 ## Features
 
-1. **Authentication**:
-   - Session-based login system differentiating between Admin and Client roles.
+1. **Player Management**:
+   - Register, update, delete, and view player details.
 
-2. **Product Management (Admin Only)**:
-   - Create, update, delete, search, and paginate products
+2. **Team Management**:
+   - Create, update, add/remove players, and view team details.
 
-3. **User Management (Admin Only)**:
-   - Manage users with role-based access (Admin/Client)
+3. **Tournament Management**:
+   - Create, update, add/remove teams, and view tournament details.
+   - Calculate the estimated duration of tournaments (basic and advanced).
 
-4. **Order Management**:
-   - Clients can create, update, delete, and view orders.
-   - Admins can view and manage the status of all orders.
+4. **Game Management**:
+   - Create, update, add/remove games.
 
 5. **Advanced Features**:
    - Status tracking for orders (On hold, Processing, Shipped, etc..).
@@ -122,13 +117,15 @@ Commandos is a web application designed for an enterprise to enhance its online 
 ## Technologies
 
 - **Java 8**: Core language used for development.
-- **Thymeleaf**: For server-side rendering of views.
+- **Spring Core**: For Dependency Injection (DI) via XML configuration.
 - **Apache Maven**: For dependency management and project build.
-- **PostgreSQL**: Relational database for storing data.
+- **MySQL**: Relational database for storing data.
+- **H2 Database**: In-memory database for development.
 - **Hibernate**: ORM for database access and management.
 - **Apache Tomcat**: Web server for deploying the application.
 - **JUnit**: For unit testing.
 - **Mockito**: For mocking classes to unit test.
+- **JaCoCo**: For code coverage.
 - **Tailwind CSS**: For responsive UI design.
 - **JIRA**: For project management using Scrum methodology.
 - **Git**: For version control with branches.
