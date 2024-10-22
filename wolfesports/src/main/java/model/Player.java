@@ -5,6 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -12,7 +14,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "players")
 public class Player {
 
-    @Id
+	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
@@ -26,7 +28,7 @@ public class Player {
 
 	@NotNull(message = "Last Name shouldn't be null")
 	@Column(name = "username", nullable = false)
-    private String username;
+	private String username;
 
 	@NotNull(message = "Email  shouldn't be null")
 	@Column(name = "email", nullable = false, unique = true)
@@ -36,18 +38,21 @@ public class Player {
 	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
 	private boolean isDeleted;
 
+	@JoinColumn(name = "team_id", nullable = true)
+	@ManyToOne
+	private Team team;
 
 	@Override
 	public String toString() {
-		return "User{" +
+		return "Player{" +
 				"id=" + id +
+				", username='" + username + '\'' +
 				", firstName='" + firstName + '\'' +
-				", lastName='" + lastName + '\'' +
-				", username=" + username +
+				", lastName=" + lastName +
 				", email=" + email +
-				", isDeleted=" + isDeleted;
+				", isDeleted=" + isDeleted +
+				"}";
 	}
-    
 
 	public Long getId() {
 		return id;
@@ -88,12 +93,12 @@ public class Player {
 	public void setIsDeleted(boolean value) {
 		this.isDeleted = value;
 	}
-    
 
-    public String getUsername() {
-      return this.username;
-    }
-    public void setUsername(String value) {
-      this.username = value;
-    }
+	public String getUsername() {
+		return this.username;
+	}
+
+	public void setUsername(String value) {
+		this.username = value;
+	}
 }

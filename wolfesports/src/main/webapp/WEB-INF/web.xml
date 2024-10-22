@@ -12,11 +12,7 @@
   </servlet>
   <servlet-mapping>
     <servlet-name>PlayerApiServlet</servlet-name>
-    <url-pattern>/api/user</url-pattern>
-  </servlet-mapping>
-  <servlet-mapping>
-    <servlet-name>PlayerApiServlet</servlet-name>
-    <url-pattern>/api/users</url-pattern>
+    <url-pattern>/api/players/*</url-pattern>
   </servlet-mapping>
 
 </web-app>

@@ -28,13 +28,87 @@ public class PlayerApiServlet extends HttpServlet {
     }
 
     @Override
+    protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if ("PATCH".equalsIgnoreCase(req.getMethod())) {
+            doPatch(req, resp);
+        } else {
+            super.service(req, resp);
+        }
+    }
+
+    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PlayerService playerService = applicationContext.getBean("playerService", PlayerService.class);
-        List<Player> players = playerService.getAllPlayers();
 
         Gson gson = new Gson();
+        String pathInfo = req.getPathInfo();
+        String jsonResponse = null;
 
-        String jsonResponse = gson.toJson(players);
+        if (pathInfo != null && pathInfo.length() > 1) {
+            String playerId = pathInfo.substring(1);
+            jsonResponse = gson.toJson(playerId);
+
+        } else {
+            PlayerService playerService = applicationContext.getBean("playerService", PlayerService.class);
+            List<Player> players = playerService.getAllPlayers();
+
+            jsonResponse = gson.toJson(players);
+        }
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = resp.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+
+    }
+
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson("post");
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = resp.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson("put");
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = resp.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+    }
+
+    protected void doPatch(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson("patch");
+
+        resp.setContentType("application/json");
+        resp.setCharacterEncoding("UTF-8");
+
+        try (PrintWriter out = resp.getWriter()) {
+            out.print(jsonResponse);
+            out.flush();
+        }
+    }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        Gson gson = new Gson();
+        String jsonResponse = gson.toJson("delete");
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("UTF-8");
