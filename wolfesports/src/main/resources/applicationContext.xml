@@ -8,8 +8,14 @@
 
     <!-- Bean definitions for PlayerRepository and PlayerService example -->
     <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+
     <bean id="playerService" class="service.PlayerService">
         <constructor-arg ref="playerRepository" />
     </bean>
+
 
 </beans>
