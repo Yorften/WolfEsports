@@ -7,6 +7,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -60,16 +61,15 @@ public class Tournament {
     private double ceremonyTime;
 
     @Enumerated(EnumType.STRING)
-    @NotNull(message = "Tournament status should not be null")
-    @Column(name = "tournament_status", nullable = false, columnDefinition = "ENUM('SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED') DEFAULT 'SCHEDULED'")
-    private TournamentStatus tournamentStatus;
+    @Column(name = "tournament_status", nullable = false, columnDefinition = "ENUM('SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED')")
+    private TournamentStatus tournamentStatus = TournamentStatus.SCHEDULED;
 
     @NotNull
-	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted;
 
     @JoinColumn(name = "game_id")
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private Game game;
 
     @OneToMany(mappedBy = "tournament")
@@ -176,30 +176,34 @@ public class Tournament {
     }
 
     public List<Team> getTeams() {
-      return this.teams;
+        return this.teams;
     }
+
     public void setTeams(List<Team> value) {
-      this.teams = value;
+        this.teams = value;
     }
 
     public List<Bracket> getBrackets() {
-      return this.brackets;
+        return this.brackets;
     }
+
     public void setBrackets(List<Bracket> value) {
-      this.brackets = value;
+        this.brackets = value;
     }
 
     public Game getGame() {
-      return this.game;
+        return this.game;
     }
+
     public void setGame(Game value) {
-      this.game = value;
+        this.game = value;
     }
 
     public boolean getIsDeleted() {
-      return this.isDeleted;
+        return this.isDeleted;
     }
+
     public void setIsDeleted(boolean value) {
-      this.isDeleted = value;
+        this.isDeleted = value;
     }
 }

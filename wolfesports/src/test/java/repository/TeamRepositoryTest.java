@@ -22,7 +22,7 @@ import service.TeamService;
 import util.PersistenceUtil;
 
 public class TeamRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(GameRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(TeamRepositoryTest.class);
 
     private static ApplicationContext applicationContext;
     private static TeamService teamService;
@@ -45,7 +45,7 @@ public class TeamRepositoryTest {
     }
 
     @Test
-    public void testAddGame() {
+    public void testAddTeam() {
         Team newTeam = new Team();
         newTeam.setTeamName("SK Telecom T1");
         newTeam.setTag("SKT");
@@ -58,7 +58,7 @@ public class TeamRepositoryTest {
     }
 
     @Test
-    public void testGetGameById() {
+    public void testGetTeamById() {
         Team newTeam = new Team();
         newTeam.setTeamName("SK Telecom T1");
         newTeam.setTag("SKT");
@@ -72,7 +72,7 @@ public class TeamRepositoryTest {
     }
 
     @Test
-    public void testGetAllGames() {
+    public void testGetAllTeams() {
         Team team1 = new Team();
         team1.setTeamName("SK Telecom T1");
         team1.setTag("SKT");
@@ -85,12 +85,12 @@ public class TeamRepositoryTest {
         teamService.addTeam(team1);
         teamService.addTeam(team2);
 
-        List<Team> allGames = teamService.getAllTeams();
-        assertTrue(allGames.size() >= 2);
+        List<Team> allTeams = teamService.getAllTeams();
+        assertTrue(allTeams.size() >= 2);
     }
 
     @Test
-    public void testUpdateGame() {
+    public void testUpdateTeam() {
         Team newTeam = new Team();
         newTeam.setTeamName("SK Telecom T1");
         newTeam.setTag("SKT");
@@ -102,14 +102,14 @@ public class TeamRepositoryTest {
 
         teamService.updateTeam(newTeam);
 
-        Optional<Team> updatedGame = teamService.getTeam(newTeam.getId());
-        assertTrue(updatedGame.isPresent());
-        assertEquals("T1", updatedGame.get().getTeamName());
-        assertEquals("T1", updatedGame.get().getTag());
+        Optional<Team> updatedTeam = teamService.getTeam(newTeam.getId());
+        assertTrue(updatedTeam.isPresent());
+        assertEquals("T1", updatedTeam.get().getTeamName());
+        assertEquals("T1", updatedTeam.get().getTag());
     }
 
     @Test
-    public void testDeleteGame() {
+    public void testDeleteTeam() {
         Team newTeam = new Team();
         newTeam.setTeamName("SK Telecom T1");
         newTeam.setTag("SKT");
@@ -118,8 +118,8 @@ public class TeamRepositoryTest {
 
         teamService.deleteTeam(newTeam.getId());
 
-        Optional<Team> deletedGame = teamService.getTeam(newTeam.getId());
-        assertTrue(deletedGame.isPresent());
-        assertTrue(deletedGame.get().getIsDeleted());
+        Optional<Team> deletedTeam = teamService.getTeam(newTeam.getId());
+        assertTrue(deletedTeam.isPresent());
+        assertTrue(deletedTeam.get().getIsDeleted());
     }
 }

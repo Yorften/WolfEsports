@@ -22,6 +22,10 @@ public class GameService {
 		return gameRepository.getAll();
 	}
 
+	public List<Game> getAllGamesWithTournaments() {
+		return gameRepository.getAllWithTournaments();
+	}
+
 
 	public void addGame(Game user) {
 		gameRepository.save(user);

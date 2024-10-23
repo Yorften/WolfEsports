@@ -22,7 +22,7 @@ import service.PlayerService;
 import util.PersistenceUtil;
 
 public class PlayerRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(GameRepositoryTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(PlayerRepositoryTest.class);
 
     private static ApplicationContext applicationContext;
     private static PlayerService playerService;
@@ -45,7 +45,7 @@ public class PlayerRepositoryTest {
     }
 
     @Test
-    public void testAddGame() {
+    public void testAddPlayer() {
         Player newPlayer = new Player();
         newPlayer.setFirstName("Gamer");
         newPlayer.setLastName("Player");
@@ -54,13 +54,13 @@ public class PlayerRepositoryTest {
 
         playerService.addPlayer(newPlayer);
 
-        Optional<Player> fetchedGame = playerService.getPlayer(newPlayer.getId());
-        assertTrue(fetchedGame.isPresent());
-        assertEquals("player@gmail.com", fetchedGame.get().getEmail());
+        Optional<Player> fetchedPlayer = playerService.getPlayer(newPlayer.getId());
+        assertTrue(fetchedPlayer.isPresent());
+        assertEquals("player@gmail.com", fetchedPlayer.get().getEmail());
     }
 
     @Test
-    public void testGetGameById() {
+    public void testGetPlayerById() {
         Player newPlayer = new Player();
         newPlayer.setFirstName("Gamer");
         newPlayer.setLastName("Player");
@@ -69,14 +69,14 @@ public class PlayerRepositoryTest {
 
         playerService.addPlayer(newPlayer);
 
-        Optional<Player> fetchedGame = playerService.getPlayer(newPlayer.getId());
-        assertTrue(fetchedGame.isPresent());
-        assertEquals("player@gmail.com", fetchedGame.get().getEmail());
+        Optional<Player> fetchedPlayer = playerService.getPlayer(newPlayer.getId());
+        assertTrue(fetchedPlayer.isPresent());
+        assertEquals("player@gmail.com", fetchedPlayer.get().getEmail());
 
     }
 
     @Test
-    public void testGetAllGames() {
+    public void testGetAllPlayers() {
         Player player1 = new Player();
         player1.setFirstName("Gamer");
         player1.setLastName("Player");
@@ -92,12 +92,12 @@ public class PlayerRepositoryTest {
         playerService.addPlayer(player1);
         playerService.addPlayer(player2);
 
-        List<Player> allGames = playerService.getAllPlayers();
-        assertTrue(allGames.size() >= 2);
+        List<Player> allPlayers = playerService.getAllPlayers();
+        assertTrue(allPlayers.size() >= 2);
     }
 
     @Test
-    public void testUpdateGame() {
+    public void testUpdatePlayer() {
         Player newPlayer = new Player();
         newPlayer.setFirstName("Gamer");
         newPlayer.setLastName("Player");
@@ -110,13 +110,13 @@ public class PlayerRepositoryTest {
 
         playerService.updatePlayer(newPlayer);
 
-        Optional<Player> updatedGame = playerService.getPlayer(newPlayer.getId());
-        assertTrue(updatedGame.isPresent());
-        assertEquals("updatedmail@gmail.com", updatedGame.get().getEmail());
+        Optional<Player> updatedPlayer = playerService.getPlayer(newPlayer.getId());
+        assertTrue(updatedPlayer.isPresent());
+        assertEquals("updatedmail@gmail.com", updatedPlayer.get().getEmail());
     }
 
     @Test
-    public void testDeleteGame() {
+    public void testDeletePlayer() {
         Player newPlayer = new Player();
         newPlayer.setFirstName("Gamer");
         newPlayer.setLastName("Player");
@@ -127,8 +127,8 @@ public class PlayerRepositoryTest {
 
         playerService.deletePlayer(newPlayer.getId());
 
-        Optional<Player> deletedGame = playerService.getPlayer(newPlayer.getId());
-        assertTrue(deletedGame.isPresent());
-        assertTrue(deletedGame.get().getIsDeleted());
+        Optional<Player> deletedPlayer = playerService.getPlayer(newPlayer.getId());
+        assertTrue(deletedPlayer.isPresent());
+        assertTrue(deletedPlayer.get().getIsDeleted());
     }
 }

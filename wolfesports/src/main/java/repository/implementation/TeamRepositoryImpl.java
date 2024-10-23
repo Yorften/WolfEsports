@@ -96,7 +96,7 @@ public class TeamRepositoryImpl implements TeamRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating team: ", e);
+            logger.error("Error updating team: ", e);
         } finally {
             entityManager.close();
         }
@@ -119,7 +119,7 @@ public class TeamRepositoryImpl implements TeamRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating team: ", e);
+            logger.error("Error deleting team: ", e);
         } finally {
             entityManager.close();
         }

@@ -51,6 +51,30 @@ public class GameRepositoryImpl implements GameRepository {
     }
 
     @Override
+    public List<Game> getAllWithTournaments() {
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        List<Game> games = null;
+
+        try {
+            TypedQuery<Game> typedQuery;
+
+            typedQuery = entityManager.createQuery(
+                    "SELECT DISTINCT g FROM Game g LEFT JOIN FETCH g.tournaments t WHERE (t.isDeleted = false OR t.id IS NULL) ORDER BY g.title ASC",
+                    Game.class);
+
+            games = typedQuery.getResultList();
+
+        } catch (Exception e) {
+            logger.error("Error listing games: ", e);
+        } finally {
+            entityManager.close();
+        }
+
+        return games;
+    }
+
+
+    @Override
     public void save(Game game) {
         EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction transaction = null;
@@ -82,7 +106,7 @@ public class GameRepositoryImpl implements GameRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating game: ", e);
+            logger.error("Error updating game: ", e);
         } finally {
             entityManager.close();
         }
@@ -105,7 +129,7 @@ public class GameRepositoryImpl implements GameRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating game: ", e);
+            logger.error("Error deleting game: ", e);
         } finally {
             entityManager.close();
         }
