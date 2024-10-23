@@ -3,39 +3,112 @@ package repository.implementation;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.TypedQuery;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import model.Game;
 import repository.interfaces.GameRepository;
+import util.PersistenceUtil;
 
-public class GameRepositoryImpl implements GameRepository{
+public class GameRepositoryImpl implements GameRepository {
+	private static final Logger logger = LoggerFactory.getLogger(GameRepositoryImpl.class);
 
     @Override
     public Optional<Game> get(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'get'");
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        try {
+            return Optional.ofNullable(entityManager.find(Game.class, id));
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public List<Game> getAll() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAll'");
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        List<Game> games = null;
+
+        try {
+            TypedQuery<Game> typedQuery;
+
+            typedQuery = entityManager.createQuery(
+                    "SELECT g FROM Game g ORDER BY g.id ASC",
+                    Game.class);
+
+            games = typedQuery.getResultList();
+
+        } catch (Exception e) {
+            logger.error("Error listing users: ", e);
+        } finally {
+            entityManager.close();
+        }
+
+        return games;
     }
 
     @Override
     public void save(Game game) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'save'");
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.persist(game);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            logger.error("Error creating user: ", e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public void update(Game game) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'update'");
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            entityManager.persist(game);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            logger.error("Error creating user: ", e);
+        } finally {
+            entityManager.close();
+        }
     }
 
     @Override
     public void delete(long id) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'delete'");
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        EntityTransaction transaction = null;
+        try {
+            transaction = entityManager.getTransaction();
+            transaction.begin();
+            Game game = entityManager.find(Game.class, id);
+            if (game != null) {
+                game.setIsDeleted(true);
+                entityManager.merge(game);
+            }
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction.isActive()) {
+                transaction.rollback();
+            }
+            logger.error("Error creating user: ", e);
+        } finally {
+            entityManager.close();
+        }
     }
-    
+
 }

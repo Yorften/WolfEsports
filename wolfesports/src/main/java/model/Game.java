@@ -28,6 +28,10 @@ public class Game {
     @Column(name = "average_gameplay_time", nullable = false)
     private Double averageGameplayTime;
 
+    @NotNull
+	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isDeleted;
+
     @OneToMany(mappedBy = "game", fetch = FetchType.LAZY)
     private List<Tournament> tournaments;
 
@@ -36,6 +40,7 @@ public class Game {
         return "Game{" +
                 "id=" + id +
                 ", title='" + title + '\'' +
+                ", isDeleted='" + isDeleted + '\'' +
                 ", averageGameplayTime='" + averageGameplayTime + '\'' +
                 "}";
     }
@@ -62,5 +67,19 @@ public class Game {
 
     public void setAverageGameplayTime(Double value) {
         this.averageGameplayTime = value;
+    }
+
+    public boolean getIsDeleted() {
+      return this.isDeleted;
+    }
+    public void setIsDeleted(boolean value) {
+      this.isDeleted = value;
+    }
+
+    public List<Tournament> getTournaments() {
+      return this.tournaments;
+    }
+    public void setTournaments(List<Tournament> value) {
+      this.tournaments = value;
     }
 }
