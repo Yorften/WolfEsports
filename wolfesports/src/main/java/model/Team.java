@@ -39,7 +39,7 @@ public class Team {
     @JoinTable(name = "brackets", joinColumns = @JoinColumn(name = "team_id"), inverseJoinColumns = @JoinColumn(name = "tournament_id"))
     private List<Tournament> tournaments;
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private List<Player> players;
 
     @Override

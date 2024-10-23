@@ -76,7 +76,7 @@ public class GameRepositoryImpl implements GameRepository {
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
-            entityManager.persist(game);
+            entityManager.merge(game);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {

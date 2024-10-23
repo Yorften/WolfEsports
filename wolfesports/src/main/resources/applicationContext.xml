@@ -6,15 +6,33 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
-    <!-- Bean definitions for PlayerRepository and PlayerService example -->
     <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
-    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
-    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
-    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
-    <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
+    <bean id="gameRepository" class="repository.implementation.GameRepositoryImpl" />
+    <bean id="teamRepository" class="repository.implementation.TeamRepositoryImpl" />
+
+    <bean id="tournamentRepository" class="repository.implementation.TournamentRepositoryImpl" />
+    <bean id="tournamentRepositoryExtension" class="repository.implementation.TournamentRepositoryImplExtension" />
+    
+    <bean id="bracketRepository" class="repository.implementation.BracketRepositoryImpl" />
 
     <bean id="playerService" class="service.PlayerService">
         <constructor-arg ref="playerRepository" />
+    </bean>
+
+    <bean id="gameService" class="service.GameService">
+        <constructor-arg ref="gameRepository" />
+    </bean>
+
+    <bean id="teamService" class="service.TeamService">
+        <constructor-arg ref="teamRepository" />
+    </bean>
+
+    <bean id="tournamentService" class="service.TournamentService">
+        <constructor-arg ref="tournamentRepository" />
+    </bean>
+
+    <bean id="bracketService" class="service.BracketService">
+        <constructor-arg ref="bracketRepository" />
     </bean>
 
 
