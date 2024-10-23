@@ -31,6 +31,15 @@ public class Bracket {
     @ManyToOne(fetch = FetchType.EAGER)
     private Team team;
 
+    @Override
+    public String toString() {
+        return "Bracket{" +
+                "id=" + id +
+                ", position='" + position + '\'' +
+                ", team='" + team.getId() + '\'' +
+                "}";
+    }
+
     public Long getId() {
         return this.id;
     }
