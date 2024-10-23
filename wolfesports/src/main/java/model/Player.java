@@ -101,4 +101,11 @@ public class Player {
 	public void setUsername(String value) {
 		this.username = value;
 	}
+
+    public Team getTeam() {
+      return this.team;
+    }
+    public void setTeam(Team value) {
+      this.team = value;
+    }
 }

@@ -64,6 +64,10 @@ public class Tournament {
     @Column(name = "tournament_status", nullable = false, columnDefinition = "ENUM('SCHEDULED', 'IN_PROGRESS', 'COMPLETED', 'CANCELLED') DEFAULT 'SCHEDULED'")
     private TournamentStatus tournamentStatus;
 
+    @NotNull
+	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private boolean isDeleted;
+
     @JoinColumn(name = "game_id")
     @ManyToOne
     private Game game;
@@ -87,6 +91,7 @@ public class Tournament {
                 ", pauseTime=" + pauseTime +
                 ", ceremonyTime=" + ceremonyTime +
                 ", tournamentStatus=" + tournamentStatus +
+                ", isDeleted=" + isDeleted +
                 "}";
     }
 
@@ -168,5 +173,33 @@ public class Tournament {
 
     public void setTournamentStatus(TournamentStatus value) {
         this.tournamentStatus = value;
+    }
+
+    public List<Team> getTeams() {
+      return this.teams;
+    }
+    public void setTeams(List<Team> value) {
+      this.teams = value;
+    }
+
+    public List<Bracket> getBrackets() {
+      return this.brackets;
+    }
+    public void setBrackets(List<Bracket> value) {
+      this.brackets = value;
+    }
+
+    public Game getGame() {
+      return this.game;
+    }
+    public void setGame(Game value) {
+      this.game = value;
+    }
+
+    public boolean getIsDeleted() {
+      return this.isDeleted;
+    }
+    public void setIsDeleted(boolean value) {
+      this.isDeleted = value;
     }
 }

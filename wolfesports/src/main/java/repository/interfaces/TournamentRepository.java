@@ -17,4 +17,5 @@ public interface TournamentRepository {
 	void delete(long id);
 
 	double calculateEstimatedTournamentDuration(Tournament tournament);
+	
 }
