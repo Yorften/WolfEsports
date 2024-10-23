@@ -9,6 +9,8 @@ public interface GameRepository {
     Optional<Game> get(long id);
 
 	List<Game> getAll();
+	
+	List<Game> getAllWithTournaments();
 
 	void save(Game game);
 
