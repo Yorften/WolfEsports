@@ -42,7 +42,7 @@ public class GameRepositoryImpl implements GameRepository {
             games = typedQuery.getResultList();
 
         } catch (Exception e) {
-            logger.error("Error listing users: ", e);
+            logger.error("Error listing games: ", e);
         } finally {
             entityManager.close();
         }
@@ -63,7 +63,7 @@ public class GameRepositoryImpl implements GameRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating user: ", e);
+            logger.error("Error creating game: ", e);
         } finally {
             entityManager.close();
         }
@@ -82,7 +82,7 @@ public class GameRepositoryImpl implements GameRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating user: ", e);
+            logger.error("Error creating game: ", e);
         } finally {
             entityManager.close();
         }
@@ -105,7 +105,7 @@ public class GameRepositoryImpl implements GameRepository {
             if (transaction.isActive()) {
                 transaction.rollback();
             }
-            logger.error("Error creating user: ", e);
+            logger.error("Error creating game: ", e);
         } finally {
             entityManager.close();
         }
