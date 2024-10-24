@@ -113,4 +113,22 @@ public class BracketRepositoryImpl implements BracketRepository {
         }
     }
 
+    @Override
+    public List<Bracket> getAllByTeamId(long id) {
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        List<Bracket> brackets = null;
+        try {
+            brackets = entityManager.createQuery(
+                "SELECT b FROM Bracket b LEFT JOIN FETCH b.tournament t WHERE b.team.id = :teamId GROUP BY b.id, b.position, b.tournament.id",
+                Bracket.class).setParameter("teamId", id).getResultList();
+
+        } catch (Exception e) {
+            logger.error("Error fetching bracket by team id: ", e);
+
+        }
+
+        return brackets;
+
+    }
+
 }

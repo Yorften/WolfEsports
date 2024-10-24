@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import model.Bracket;
+import model.Tournament;
 import repository.interfaces.BracketRepository;
 
 public class BracketService {
@@ -18,6 +19,10 @@ public class BracketService {
         return bracketRepository.get(id);
     }
 
+    public List<Bracket> getBracketsByTeamId(long id){
+        return bracketRepository.getAllByTeamId(id);
+    }
+
     public List<Bracket> getFirstRoundBrackets(long id){
         return bracketRepository.getAll(id);
     }
@@ -28,5 +33,14 @@ public class BracketService {
 
     public void updateBracket(Bracket bracket){
         bracketRepository.update(bracket);
+    }
+
+    public boolean canTeamSignUp(List<Bracket> brackets, Tournament tournament){
+        
+        for (Bracket bracket : brackets) {
+            if(bracket.getTournament().getFinishDate().isAfter(tournament.getStartDate()))
+                return false;
+        }
+        return true;
     }
 }

@@ -24,7 +24,7 @@ public class Bracket {
     private int position;
 
     @JoinColumn(name = "tournament_id", nullable = false)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     private Tournament tournament;
 
     @JoinColumn(name = "team_id", nullable = true)
