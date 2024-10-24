@@ -21,8 +21,8 @@ import model.Game;
 import service.GameService;
 import util.PersistenceUtil;
 
-public class GameRepositoryTest {
-    private static final Logger logger = LoggerFactory.getLogger(GameRepositoryTest.class);
+public class GameRepositoryImplTest {
+    private static final Logger logger = LoggerFactory.getLogger(GameRepositoryImplTest.class);
 
     private static ApplicationContext applicationContext;
     private static GameService gameService;
@@ -31,7 +31,7 @@ public class GameRepositoryTest {
     public static void init() {
         applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         gameService = applicationContext.getBean("gameService", GameService.class);
-        System.setProperty("persistence.unit.name", "test_WOLFESPORTS_PU");
+        System.setProperty("persistence.unit.name", "H2_WOLFESPORTS_PU");
     }
 
     @After

@@ -27,15 +27,19 @@ public class PersistenceUtil {
                 throw new IllegalStateException("Database configuration is incomplete.");
             }
 
-            properties.put("javax.persistence.jdbc.user", user);
-            properties.put("javax.persistence.jdbc.password", password);
-
             String persistenceUnitName = System.getProperty("persistence.unit.name", "WOLFESPORTS_PU");
 
             if (persistenceUnitName.equals("test_WOLFESPORTS_PU"))
                 url = url + "_test";
 
+            if (persistenceUnitName.equals("H2_WOLFESPORTS_PU")){
+                url = "jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE;MODE=LEGACY";
+                user = "sa";
+                password = "";
+            }
             properties.put("javax.persistence.jdbc.url", url);
+            properties.put("javax.persistence.jdbc.user", user);
+            properties.put("javax.persistence.jdbc.password", password);
 
             entityManagerFactory = Persistence.createEntityManagerFactory(persistenceUnitName, properties);
         } catch (Throwable ex) {

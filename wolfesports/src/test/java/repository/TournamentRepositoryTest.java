@@ -37,7 +37,7 @@ public class TournamentRepositoryTest {
         applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         tournamentService = applicationContext.getBean("tournamentService", TournamentService.class);
         gameService = applicationContext.getBean("gameService", GameService.class);
-        System.setProperty("persistence.unit.name", "test_WOLFESPORTS_PU");
+        System.setProperty("persistence.unit.name", "H2_WOLFESPORTS_PU");
     }
 
     @AfterClass

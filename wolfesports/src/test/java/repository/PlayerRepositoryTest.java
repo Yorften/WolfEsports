@@ -31,7 +31,7 @@ public class PlayerRepositoryTest {
     public static void init() {
         applicationContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
         playerService = applicationContext.getBean("playerService", PlayerService.class);
-        System.setProperty("persistence.unit.name", "test_WOLFESPORTS_PU");
+        System.setProperty("persistence.unit.name", "H2_WOLFESPORTS_PU");
     }
 
     @After

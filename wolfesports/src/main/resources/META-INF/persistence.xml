@@ -7,6 +7,10 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>model.Player</class>
+        <class>model.Bracket</class>
+        <class>model.Game</class>
+        <class>model.Team</class>
+        <class>model.Tournament</class>
 
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver" />
@@ -27,6 +31,10 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <class>model.Player</class>
+        <class>model.Bracket</class>
+        <class>model.Game</class>
+        <class>model.Team</class>
+        <class>model.Tournament</class>
 
 
         <properties>
@@ -42,5 +50,28 @@
             <property name="hibernate.logging.level" value="WARN" />
         </properties>
 
+    </persistence-unit>
+
+    <persistence-unit name="H2_WOLFESPORTS_PU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <class>model.Player</class>
+        <class>model.Bracket</class>
+        <class>model.Game</class>
+        <class>model.Team</class>
+        <class>model.Tournament</class>
+
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.h2.Driver" />
+            <property name="javax.persistence.jdbc.url" value="" />
+            <property name="javax.persistence.jdbc.user" value="" />
+            <property name="javax.persistence.jdbc.password" value="" />
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect" />
+            <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+            <property name="hibernate.use_sql_comments" value="true" />
+            <property name="hibernate.logging.level" value="WARN" />
+        </properties>
     </persistence-unit>
 </persistence>

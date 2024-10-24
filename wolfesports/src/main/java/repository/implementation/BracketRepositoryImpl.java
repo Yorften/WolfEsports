@@ -74,7 +74,7 @@ public class BracketRepositoryImpl implements BracketRepository {
                 TypedQuery<Bracket> typedQuery;
 
                 typedQuery = entityManager.createQuery(
-                        "SELECT b FROM Bracket b WHERE b.tournament.id = :tournamentId GROUP BY b.team.id ORDER BY b.position DESC",
+                        "SELECT b FROM Bracket b WHERE b.tournament.id = :tournamentId GROUP BY b.id, b.position, b.team.id ORDER BY b.position DESC",
                         Bracket.class);
 
                 typedQuery.setParameter("tournamentId", tournament.getId());

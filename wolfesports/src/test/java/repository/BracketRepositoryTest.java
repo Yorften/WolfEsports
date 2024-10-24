@@ -1,7 +1,6 @@
 package repository;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -9,7 +8,6 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 
-import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -45,35 +43,8 @@ public class BracketRepositoryTest {
         gameService = applicationContext.getBean("gameService", GameService.class);
         teamService = applicationContext.getBean("teamService", TeamService.class);
 
-        System.setProperty("persistence.unit.name", "test_WOLFESPORTS_PU");
+        System.setProperty("persistence.unit.name", "H2_WOLFESPORTS_PU");
 
-    }
-
-    @AfterClass
-    public static void truncate() {
-        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.createQuery("DELETE FROM Game").executeUpdate();
-        transaction.commit();
-        entityManager.close();
-    }
-
-    @After
-    public void terminate() {
-        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
-        EntityTransaction transaction = entityManager.getTransaction();
-        transaction.begin();
-        entityManager.createQuery("DELETE FROM Tournament").executeUpdate();
-        entityManager.createQuery("DELETE FROM Bracket").executeUpdate();
-        entityManager.createQuery("DELETE FROM Game").executeUpdate();
-        entityManager.createQuery("DELETE FROM Team").executeUpdate();
-        transaction.commit();
-        entityManager.close();
-    }
-
-    @Test
-    public void testGetFirstRoundBrackets() {
         Game game = new Game();
         game.setTitle("League of Legends");
         game.setAverageGameplayTime(35D);
@@ -91,10 +62,29 @@ public class BracketRepositoryTest {
         gameService.addGame(game);
 
         tournamentService.addTournament(tournament);
+    }
+
+
+    @AfterClass
+    public static void terminate() {
+        EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
+        EntityTransaction transaction = entityManager.getTransaction();
+        transaction.begin();
+        entityManager.createQuery("DELETE FROM Tournament").executeUpdate();
+        entityManager.createQuery("DELETE FROM Bracket").executeUpdate();
+        entityManager.createQuery("DELETE FROM Game").executeUpdate();
+        entityManager.createQuery("DELETE FROM Team").executeUpdate();
+        transaction.commit();
+        entityManager.close();
+    }
+
+    @Test
+    public void testGetFirstRoundBrackets() {
 
         List<Bracket> brackets = bracketService.getFirstRoundBrackets(1L);
 
-        assertTrue(brackets.size() == 32);
+        assertEquals(32, brackets.size());
+
     }
 
     @Test
@@ -115,23 +105,6 @@ public class BracketRepositoryTest {
         teamService.addTeam(team2);
         teamService.addTeam(team3);
 
-        Game game = new Game();
-        game.setTitle("League of Legends");
-        game.setAverageGameplayTime(35D);
-
-        Tournament tournament = new Tournament();
-        tournament.setTitle("Worlds League of Legends");
-        tournament.setDescription("description");
-        tournament.setStartDate(LocalDate.of(2024, 11, 1));
-        tournament.setFinishDate(LocalDate.of(2024, 12, 12));
-        tournament.setTotalPlaces(32);
-        tournament.setGame(game);
-        tournament.setCeremonyTime(30);
-        tournament.setPauseTime(20);
-
-        gameService.addGame(game);
-
-        tournamentService.addTournament(tournament);
 
         Bracket bracket66 = bracketService.getBracket(66).get(); // 1st place bracket
         Bracket bracket65 = bracketService.getBracket(65).get(); // finals bracket
