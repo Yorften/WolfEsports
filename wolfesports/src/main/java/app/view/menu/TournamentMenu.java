@@ -3,7 +3,7 @@ package app.view.menu;
 import java.util.Scanner;
 
 import app.view.interfaces.Menu;
-import util.IO;
+import app.util.IO;
 
 public class TournamentMenu implements Menu {
 

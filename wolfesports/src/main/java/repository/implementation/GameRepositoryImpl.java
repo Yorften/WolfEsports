@@ -36,7 +36,7 @@ public class GameRepositoryImpl implements GameRepository {
             TypedQuery<Game> typedQuery;
 
             typedQuery = entityManager.createQuery(
-                    "SELECT g FROM Game g ORDER BY g.id ASC",
+                    "SELECT g FROM Game g WHERE g.isDeleted = false ORDER BY g.id ASC",
                     Game.class);
 
             games = typedQuery.getResultList();

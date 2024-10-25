@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import model.Bracket;
 import model.Tournament;
 import repository.interfaces.TournamentRepository;
 import util.PersistenceUtil;
@@ -22,15 +23,13 @@ public class TournamentRepositoryImplExtension implements TournamentRepository {
         EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
         Tournament tournament = null;
         try {
-            TypedQuery<Tournament> typedQuery;
+            tournament = entityManager.createQuery(
+                    "SELECT t FROM Tournament t LEFT JOIN FETCH t.teams e WHERE (e.isDeleted = false OR e.id IS NULL) AND t.id = :tournamentId",
+                    Tournament.class).setParameter("tournamentId", id).getSingleResult();
 
-            typedQuery = entityManager.createQuery(
-                    "SELECT DISTINCT t FROM Tournament t LEFT JOIN FETCH t.teams e WHERE (e.isDeleted = false OR e.id IS NULL) AND t.id = :id ORDER BY t.id ASC",
-                    Tournament.class);
-
-            typedQuery.setParameter("id", id);
-
-            tournament = typedQuery.getSingleResult();
+            tournament = entityManager.createQuery(
+                    "SELECT DISTINCT t from Tournament t LEFT JOIN FETCH t.brackets b WHERE t = :tournament",
+                    Tournament.class).setParameter("tournament", tournament).getSingleResult();
 
         } catch (Exception e) {
             logger.error("Error getting tournament: ", e);
@@ -50,7 +49,7 @@ public class TournamentRepositoryImplExtension implements TournamentRepository {
             TypedQuery<Tournament> typedQuery;
 
             typedQuery = entityManager.createQuery(
-                    "SELECT DISTINCT t FROM Tournament t ORDER BY t.startDate ASC",
+                    "SELECT DISTINCT t FROM Tournament t WHERE t.isDeleted = false ORDER BY t.startDate ASC",
                     Tournament.class);
 
             tournaments = typedQuery.getResultList();
@@ -65,17 +64,21 @@ public class TournamentRepositoryImplExtension implements TournamentRepository {
     }
 
     @Override
-    public void save(Tournament tournament) {
+    public void save(Tournament tournament) throws IllegalStateException {
         EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction transaction = null;
 
         double estimatedTime = calculateEstimatedTournamentDuration(tournament);
+        if (estimatedTime == -1)
+            throw new IllegalStateException("Could not calculate estimated duration");
+
         tournament.setEstimatedTime(estimatedTime);
 
         try {
             transaction = entityManager.getTransaction();
             transaction.begin();
             entityManager.persist(tournament);
+            createBracketsForTournament(tournament, entityManager);
             transaction.commit();
         } catch (Exception e) {
             if (transaction.isActive()) {
@@ -85,6 +88,17 @@ public class TournamentRepositoryImplExtension implements TournamentRepository {
         } finally {
             entityManager.close();
         }
+    }
+
+    private void createBracketsForTournament(Tournament tournament, EntityManager entityManager) {
+        int brackets = tournament.getTotalPlaces() * 2 + 2;
+        for (int i = 0; i < brackets; i++) {
+            Bracket bracket = new Bracket();
+            bracket.setTournament(tournament);
+            bracket.setPosition(i + 1);
+            entityManager.persist(bracket);
+        }
+
     }
 
     @Override
@@ -135,8 +149,16 @@ public class TournamentRepositoryImplExtension implements TournamentRepository {
 
     @Override
     public double calculateEstimatedTournamentDuration(Tournament tournament) {
-        return (tournament.getTotalPlaces() * tournament.getGame().getAverageGameplayTime()) + tournament.getPauseTime()
-                + tournament.getCeremonyTime();
+        double estimatedDuration;
+        try {
+            estimatedDuration = (tournament.getTotalPlaces() * tournament.getGame().getAverageGameplayTime())
+                    + tournament.getPauseTime()
+                    + tournament.getCeremonyTime();
+            return estimatedDuration;
+        } catch (Exception e) {
+            logger.error("Error calculating estimated tournament duration", e);
+        }
+        return -1;
     }
 
 }

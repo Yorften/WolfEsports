@@ -77,6 +77,30 @@ public final class InputValidator {
         do {
             try {
                 System.out.print(message);
+                int input = in.nextInt();
+
+                if (input > 0) {
+                    if (input % 8 == 0) {
+                        return input;
+                    } else {
+                        System.out.println("The number of places must be a positive multiple of 8. Please try again.");
+                        in.next();
+                    }
+                } else {
+                    System.out.println("Please enter a positive number.");
+                    in.next();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please pick a valid number.");
+            }
+        } while (true);
+
+    }
+
+    public static Integer promptAndParseNullableTournamentPlaces(String message) {
+        do {
+            try {
+                System.out.print(message);
                 String input = in.next();
 
                 if (input.isEmpty()) {
@@ -126,25 +150,6 @@ public final class InputValidator {
             try {
                 System.out.print(message);
                 Double input = in.nextDouble();
-                if (input > 0) {
-                    return input;
-                } else {
-                    System.out.print("Please enter a positive non null number");
-                    in.next();
-                }
-            } catch (Exception e) {
-                System.out.print("Please pick a valid number...");
-                in.next();
-                in.next();
-            }
-        } while (true);
-    }
-
-    public static Double promptAndParseNullableDouble(String message) {
-        do {
-            try {
-                System.out.print(message);
-                Double input = in.nextDouble();
                 if (input >= 0) {
                     return input;
                 } else {
@@ -159,6 +164,31 @@ public final class InputValidator {
         } while (true);
     }
 
+    public static Double promptAndParseNullableDouble(String message) {
+        do {
+            try {
+                System.out.print(message);
+                String input = in.next();
+
+                if (input.isEmpty()) {
+                    return null;
+                }
+
+                Double parsedDouble = Double.parseDouble(input);
+                if (parsedDouble > 0) {
+                    return parsedDouble;
+                } else {
+                    System.out.println("Please enter a positive number.");
+                    in.next();
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please pick a valid number.");
+                in.next();
+                in.next();
+            }
+        } while (true);
+    }
+
     public static String promptAndParseString(String message) {
         do {
             try {
@@ -167,24 +197,22 @@ public final class InputValidator {
                 if (!input.trim().isEmpty()) {
                     return input;
                 } else {
-                    System.out.print("Please enter a valid string (no empty strings, spaces, ...)");
-                    in.next();
+                    System.out.println("Please enter a valid string (no empty strings, spaces, etc.)");
                 }
             } catch (Exception e) {
-                System.out.print("Please enter a valid string");
-                in.next();
+                System.out.println("Please enter a valid string.");
                 in.next();
             }
         } while (true);
     }
 
     public static String promptAndParseNullableString(String message) {
-        do {
-            System.out.print(message);
-            String input = in.next();
-            return input;
-        } while (true);
+        System.out.print(message);
+        String input = in.next();
+        if (input.trim().isEmpty())
+            return null;
 
+        return input;
     }
 
     public static String promptAndParsePhoneNumber(String message) {

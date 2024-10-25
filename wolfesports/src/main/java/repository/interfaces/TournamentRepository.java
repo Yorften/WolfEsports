@@ -10,7 +10,7 @@ public interface TournamentRepository {
 
 	List<Tournament> getAll();
 
-	void save(Tournament tournament);
+	void save(Tournament tournament) throws IllegalStateException;
 
 	void update(Tournament tournament);
 

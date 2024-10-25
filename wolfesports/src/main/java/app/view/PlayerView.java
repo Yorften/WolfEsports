@@ -1,6 +1,7 @@
 package app.view;
 
 import java.util.List;
+import java.util.Scanner;
 
 import model.Player;
 import model.Team;
@@ -8,26 +9,51 @@ import app.util.IO;
 import app.util.InputValidator;
 
 public class PlayerView {
+	Scanner in = IO.getScanner();
+
 	private TeamView teamView = new TeamView();
 
-	public Player addPlayerUI(List<Team> teams) {
+	public Player addPlayerUI(List<Team> teams, Player player) {
 		IO.clear();
-		String firstName = InputValidator.promptAndParseString("First name : ");
-		String lastName = InputValidator.promptAndParseString("Last name : ");
-		String email = InputValidator.promptAndParseString("Enter the player's email : ");
-		String userName = InputValidator.promptAndParseString("Enter the player's username : ");
 
-		Player player = new Player();
+		String firstName;
+		String lastName;
+		String email;
+		String userName;
+		Team team = new Team();
 
-		player.setFirstName(firstName);
-		player.setLastName(lastName);
-		player.setEmail(email);
-		player.setUsername(userName);
+		if (player == null) {
+			player = new Player();
 
-		Team team = teamView.listTeams(teams);
+			firstName = InputValidator.promptAndParseString("First name : ");
+			lastName = InputValidator.promptAndParseString("Last name : ");
+			email = InputValidator.promptAndParseString("Enter the player's email : ");
+			userName = InputValidator.promptAndParseString("Enter the player's username : ");
 
-		player.setTeam(team);
+		} else {
 
+			firstName = InputValidator.promptAndParseNullableString("First name : ");
+			lastName = InputValidator.promptAndParseNullableString("Last name : ");
+			email = InputValidator.promptAndParseNullableString("Enter the player's email : ");
+			userName = InputValidator.promptAndParseNullableString("Enter the player's username : ");
+		}
+
+		player.setFirstName(firstName == null ? player.getFirstName() : firstName);
+		player.setLastName(lastName == null ? player.getLastName() : lastName);
+		player.setEmail(email == null ? player.getEmail() : email);
+		player.setUsername(userName == null ? player.getUsername() : userName);
+
+		if (InputValidator.promptYesOrNo("Do you want to assign a team to the player ?")) {
+			team = teamView.listTeams(teams);
+
+			if (team == null) {
+				System.out.println("No teams found\nPlase create a game before creating a tournament");
+				return null;
+			}
+
+			player.setTeam(team);
+
+		}
 		return player;
 	}
 
@@ -41,7 +67,7 @@ public class PlayerView {
 			System.out.println(
 					"|                                                                                                             |");
 			System.out.println(
-					"|                                                No players found                                               |");
+					"|                                               No players found                                              |");
 			System.out.println(
 					"|                                                                                                             |");
 			System.out.println(
@@ -66,7 +92,7 @@ public class PlayerView {
 						player.getLastName(),
 						player.getEmail(),
 						player.getUsername(),
-						player.getTeam().getTag());
+						player.getTeam() == null ? "N/A" : player.getTeam().getTag());
 				System.out.println(
 						"+--------------------------------------------------------------------------------------------------------+");
 			}
@@ -96,5 +122,47 @@ public class PlayerView {
 
 		return selectedPlayer;
 
+	}
+
+	public int subPlayerMenu(Player player) {
+		int input = -1;
+
+		IO.clear();
+		System.out.println(
+				"+--------------------------------------------------------------------------------------------------------+");
+		System.out.println(
+				"|  Id  |    First Name    |     Last Name    |         Email         |       Usename      |     Team     |");
+		System.out.println(
+				"+--------------------------------------------------------------------------------------------------------+");
+		System.out.printf("|  %-3d | %-16s | %-16s | %-21s | %-18s | %-12s |\n",
+				player.getId(),
+				player.getFirstName(),
+				player.getLastName(),
+				player.getEmail(),
+				player.getUsername(),
+				player.getTeam() == null ? "N/A" : player.getTeam().getTag());
+		System.out.println(
+				"+--------------------------------------------------------------------------------------------------------+");
+
+		System.out.println("\t\t+---------------------------------------------+");
+		System.out.println("\t\t|                                             |");
+		System.out.println("\t\t|     1- Update player                        |");
+		System.out.println("\t\t|     2- Delete player                        |");
+		System.out.println("\t\t|     3- Back                                 |");
+		System.out.println("\t\t|                                             |");
+		System.out.println("\t\t+---------------------------------------------+");
+		System.out.print("Pick your choice : ");
+
+		try {
+			input = in.nextInt();
+			if (input < 1 || input > 3) {
+				System.out.println("Please pick a choice between 1 and 3...");
+				in.next();
+			}
+		} catch (Exception e) {
+			System.out.println("Please pick a valid number...");
+			in.next();
+		}
+		return input;
 	}
 }

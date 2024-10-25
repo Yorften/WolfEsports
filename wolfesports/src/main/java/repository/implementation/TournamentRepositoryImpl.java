@@ -49,7 +49,7 @@ public class TournamentRepositoryImpl implements TournamentRepository {
             TypedQuery<Tournament> typedQuery;
 
             typedQuery = entityManager.createQuery(
-                    "SELECT DISTINCT t FROM Tournament t ORDER BY t.startDate ASC",
+                    "SELECT DISTINCT t FROM Tournament t WHERE t.isDeleted = false ORDER BY t.startDate ASC",
                     Tournament.class);
 
             tournaments = typedQuery.getResultList();
@@ -64,11 +64,14 @@ public class TournamentRepositoryImpl implements TournamentRepository {
     }
 
     @Override
-    public void save(Tournament tournament) {
+    public void save(Tournament tournament) throws IllegalStateException {
         EntityManager entityManager = PersistenceUtil.getEntityManagerFactory().createEntityManager();
         EntityTransaction transaction = null;
 
         double estimatedTime = calculateEstimatedTournamentDuration(tournament);
+        if (estimatedTime == -1)
+            throw new IllegalStateException("Could not calculate estimated duration");
+
         tournament.setEstimatedTime(estimatedTime);
 
         try {
@@ -146,8 +149,15 @@ public class TournamentRepositoryImpl implements TournamentRepository {
 
     @Override
     public double calculateEstimatedTournamentDuration(Tournament tournament) {
-        return (tournament.getTotalPlaces() * tournament.getGame().getAverageGameplayTime())
-                + tournament.getPauseTime();
+        double estimatedDuration;
+        try {
+            estimatedDuration = (tournament.getTotalPlaces() * tournament.getGame().getAverageGameplayTime())
+                    + tournament.getPauseTime();
+            return estimatedDuration;
+        } catch (Exception e) {
+            logger.error("Error calculating estimated tournament duration", e);
+        }
+        return -1;
     }
 
 }
