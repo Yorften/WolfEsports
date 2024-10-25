@@ -36,7 +36,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
             TypedQuery<Player> typedQuery;
 
             typedQuery = entityManager.createQuery(
-                    "SELECT p FROM Player p ORDER BY p.id ASC",
+                    "SELECT p FROM Player p WHERE p.isDeleted = false ORDER BY p.id ASC",
                     Player.class);
 
             players = typedQuery.getResultList();

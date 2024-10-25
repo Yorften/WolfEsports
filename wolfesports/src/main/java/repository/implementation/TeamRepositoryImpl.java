@@ -50,7 +50,7 @@ public class TeamRepositoryImpl implements TeamRepository {
             TypedQuery<Team> typedQuery;
 
             typedQuery = entityManager.createQuery(
-                    "SELECT DISTINCT t FROM Team t ORDER BY t.id ASC",
+                    "SELECT DISTINCT t FROM Team t WHERE t.isDeleted = false ORDER BY t.id ASC",
                     Team.class);
 
             teams = typedQuery.getResultList();
