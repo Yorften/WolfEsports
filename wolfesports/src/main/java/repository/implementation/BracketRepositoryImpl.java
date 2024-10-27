@@ -41,7 +41,7 @@ public class BracketRepositoryImpl implements BracketRepository {
                 TypedQuery<Bracket> typedQuery;
 
                 typedQuery = entityManager.createQuery(
-                        "SELECT b FROM Bracket b WHERE b.position <= :totalPlaces AND b.tournament.id = :tournamentId",
+                        "SELECT b FROM Bracket b WHERE b.position <= :totalPlaces AND b.team.id IS NULL AND b.tournament.id = :tournamentId",
                         Bracket.class);
 
                 typedQuery.setParameter("totalPlaces", tournament.getTotalPlaces());

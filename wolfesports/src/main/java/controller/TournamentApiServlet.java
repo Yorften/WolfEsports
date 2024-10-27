@@ -15,11 +15,14 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import model.Player;
-import service.PlayerService;
+import model.Tournament;
+import service.TournamentService;
+import util.BracketExclusionStrategy;
+import util.GameExclusionStrategy;
 import util.TeamExclusionStrategy;
+import util.TournamentExclusionStrategy;
 
-public class PlayerApiServlet extends HttpServlet {
+public class TournamentApiServlet extends HttpServlet {
 
     private ApplicationContext applicationContext;
 
@@ -41,17 +44,20 @@ public class PlayerApiServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        Gson gson = new GsonBuilder().setExclusionStrategies(new TeamExclusionStrategy()).create();
         String pathInfo = req.getPathInfo();
         String jsonResponse = null;
-        PlayerService playerService = applicationContext.getBean("playerService", PlayerService.class);
+        TournamentService tournamentService = applicationContext.getBean("tournamentService", TournamentService.class);
 
         if (pathInfo != null && pathInfo.length() > 1) {
-            String playerIdStr = pathInfo.substring(1);
-            Long playerId;
+            Gson gson = new GsonBuilder()
+                    .setExclusionStrategies(new TeamExclusionStrategy(), new BracketExclusionStrategy(),
+                            new GameExclusionStrategy())
+                    .create();
+            String tournamentIdStr = pathInfo.substring(1);
+            Long tournamentId;
 
             try {
-                playerId = Long.parseLong(playerIdStr);
+                tournamentId = Long.parseLong(tournamentIdStr);
             } catch (NumberFormatException e) {
 
                 resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -65,13 +71,16 @@ public class PlayerApiServlet extends HttpServlet {
                 return;
             }
 
-            Player player = playerService.getPlayer(playerId).orElse(null);
-            jsonResponse = gson.toJson(player);
+            Tournament tournament = tournamentService.getTournament(tournamentId).orElse(null);
+            jsonResponse = gson.toJson(tournament);
 
         } else {
-            List<Player> players = playerService.getAllPlayers();
+            Gson gson = new GsonBuilder()
+                    .setExclusionStrategies(new GameExclusionStrategy(), new TournamentExclusionStrategy())
+                    .create();
+            List<Tournament> tournaments = tournamentService.getAllTournaments();
 
-            jsonResponse = gson.toJson(players);
+            jsonResponse = gson.toJson(tournaments);
         }
 
         resp.setContentType("application/json");

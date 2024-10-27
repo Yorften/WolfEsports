@@ -15,4 +15,22 @@
     <url-pattern>/api/players/*</url-pattern>
   </servlet-mapping>
 
+  <servlet>
+    <servlet-name>TournamentApiServlet</servlet-name>
+    <servlet-class>controller.TournamentApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>TournamentApiServlet</servlet-name>
+    <url-pattern>/api/tournaments/*</url-pattern>
+  </servlet-mapping>
+
+  <servlet>
+    <servlet-name>BracketApiServlet</servlet-name>
+    <servlet-class>controller.BracketApiServlet</servlet-class>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>BracketApiServlet</servlet-name>
+    <url-pattern>/api/brackets/*</url-pattern>
+  </servlet-mapping>
+
 </web-app>
