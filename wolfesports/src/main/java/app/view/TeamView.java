@@ -116,15 +116,16 @@ public class TeamView {
 		System.out.println("\t\t|                                             |");
 		System.out.println("\t\t|     1- Update team                          |");
 		System.out.println("\t\t|     2- Delete team                          |");
-		System.out.println("\t\t|     3- Back                                 |");
+		System.out.println("\t\t|     3- Warn a team                          |");
+		System.out.println("\t\t|     4- Back                                 |");
 		System.out.println("\t\t|                                             |");
 		System.out.println("\t\t+---------------------------------------------+");
 		System.out.print("Pick your choice : ");
 
 		try {
 			input = in.nextInt();
-			if (input < 1 || input > 3) {
-				System.out.println("Please pick a choice between 1 and 3...");
+			if (input < 1 || input > 4) {
+				System.out.println("Please pick a choice between 1 and 4...");
 				in.next();
 			}
 		} catch (Exception e) {

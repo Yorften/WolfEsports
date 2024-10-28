@@ -6,14 +6,20 @@
                         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
 
+    <bean id="warning" class="model.Warning">
+        <property name="colour" value="RED" />
+    </bean>
+
     <bean id="playerRepository" class="repository.implementation.PlayerRepositoryImpl" />
     <bean id="gameRepository" class="repository.implementation.GameRepositoryImpl" />
     <bean id="teamRepository" class="repository.implementation.TeamRepositoryImpl" />
 
     <bean id="tournamentRepository" class="repository.implementation.TournamentRepositoryImpl" />
-    <bean id="tournamentRepositoryExtension" class="repository.implementation.TournamentRepositoryImplExtension" />
-    
+    <bean id="tournamentRepositoryExtension"
+        class="repository.implementation.TournamentRepositoryImplExtension" />
+
     <bean id="bracketRepository" class="repository.implementation.BracketRepositoryImpl" />
+    <bean id="warningRepository" class="repository.implementation.WarningRepositoryImpl" />
 
     <bean id="playerService" class="service.PlayerService">
         <constructor-arg ref="playerRepository" />
@@ -33,6 +39,10 @@
 
     <bean id="bracketService" class="service.BracketService">
         <constructor-arg ref="bracketRepository" />
+    </bean>
+
+    <bean id="warningService" class="service.WarningService">
+        <constructor-arg ref="warningRepository" />
     </bean>
 
 

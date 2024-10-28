@@ -15,20 +15,22 @@ public class TeamMenu implements Menu {
         int input = -1;
 
         System.out.println("\n\t\t+---------------------------------------------+");
-        System.out.println("\t\t|                  TEAMs MENU                 |");
+        System.out.println("\t\t|                  TEAMS MENU                 |");
         System.out.println("\t\t+---------------------------------------------+");
         System.out.println("\t\t|                                             |");
         System.out.println("\t\t|     1- List of teams                        |");
-        System.out.println("\t\t|     2- Add a team                           |");
-        System.out.println("\t\t|     3- Back                                 |");
+        System.out.println("\t\t|     2- List of warned teams                 |");
+        System.out.println("\t\t|     3- List of non warned teams             |");
+        System.out.println("\t\t|     4- Add a team                           |");
+        System.out.println("\t\t|     5- Back                                 |");
         System.out.println("\t\t|                                             |");
         System.out.println("\t\t+---------------------------------------------+");
         System.out.print("Pick your choice : ");
 
         try {
             input = in.nextInt();
-            if (input < 1 || input > 3) {
-                System.out.println("Please pick a choice between 1 and 3...");
+            if (input < 1 || input > 5) {
+                System.out.println("Please pick a choice between 1 and 5...");
                 in.next();
             }
         } catch (Exception e) {
