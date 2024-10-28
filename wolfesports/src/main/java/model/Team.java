@@ -12,6 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -32,7 +33,7 @@ public class Team {
     private String tag;
 
     @NotNull
-	@Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    @Column(name = "is_deleted", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private boolean isDeleted;
 
     @ManyToMany(fetch = FetchType.LAZY)
@@ -42,6 +43,10 @@ public class Team {
     @OneToMany(mappedBy = "team", fetch = FetchType.LAZY)
     private List<Player> players;
 
+    @OneToOne
+    @JoinColumn(name = "warning_id", referencedColumnName = "id")
+    private Warning warning;
+
     @Override
     public String toString() {
         return "Team{" +
@@ -49,9 +54,9 @@ public class Team {
                 ", teamName='" + teamName + '\'' +
                 ", tag='" + tag + '\'' +
                 ", isDeleted='" + isDeleted + '\'' +
+                ", warning='" + warning + '\'' +
                 "}";
     }
-    
 
     public Long getId() {
         return this.id;
@@ -86,16 +91,25 @@ public class Team {
     }
 
     public List<Tournament> getTournaments() {
-      return this.tournaments;
+        return this.tournaments;
     }
+
     public void setTournaments(List<Tournament> value) {
-      this.tournaments = value;
+        this.tournaments = value;
     }
 
     public boolean getIsDeleted() {
-      return this.isDeleted;
+        return this.isDeleted;
     }
+
     public void setIsDeleted(boolean value) {
-      this.isDeleted = value;
+        this.isDeleted = value;
+    }
+
+    public Warning getWarning() {
+      return this.warning;
+    }
+    public void setWarning(Warning value) {
+      this.warning = value;
     }
 }
